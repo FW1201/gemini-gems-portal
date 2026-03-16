@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的 Gemini Gems 入口</title>
+  <title>數位敘事力期刊 Gems 大全</title>
   <style>
     :root {
       --bg: #eef2ff;
@@ -307,23 +307,65 @@
     /* ── FOOTER ──────────────────────────────────── */
     footer {
       text-align: center;
-      padding: 24px;
+      padding: 32px 24px;
       color: var(--muted);
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       border-top: 1px solid var(--border);
       background: var(--surface);
+      line-height: 1.8;
     }
     footer a { color: var(--blue); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+    .footer-social {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 10px 0;
+    }
+    .footer-social a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 500;
+      transition: all 0.18s;
+      color: var(--muted);
+    }
+    .footer-social a:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: var(--blue-pale);
+      text-decoration: none;
+    }
+    .footer-divider {
+      width: 48px; height: 2px;
+      background: var(--border);
+      margin: 14px auto;
+      border-radius: 2px;
+    }
+    .visitor-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .visitor-badge img { border-radius: 4px; vertical-align: middle; }
   </style>
 </head>
 <body>
 
 <header>
   <div class="header-inner">
-    <div class="header-badge">✦ Gemini Gems &nbsp;·&nbsp; 22 個工具</div>
-    <h1>我的 <span>Gems</span> 工具入口</h1>
+    <div class="header-badge">✦ 數位敘事力期刊 &nbsp;·&nbsp; 22 個 Gems 工具</div>
+    <h1><span>數位敘事力期刊</span> Gems 大全</h1>
     <p>依用途分類，快速找到你需要的 AI 助手</p>
+    <p style="margin-top:8px;font-size:0.8rem;color:rgba(191,219,254,0.7);">數位敘事力期刊（吳奇）製作 &nbsp;·&nbsp; Published on 2026.03.16</p>
   </div>
 </header>
 <span class="wave"></span>
@@ -352,7 +394,38 @@
 <div class="grid" id="grid"></div>
 
 <footer>
-  共 22 個 Gemini Gems &nbsp;·&nbsp; 點擊「開啟」直接進入工具
+  <div><strong style="color:var(--text);">數位敘事力期刊 Gems 大全</strong></div>
+  <div style="margin-top:4px;">數位敘事力期刊（吳奇）製作 &nbsp;·&nbsp; Published on 2026.03.16</div>
+
+  <div class="footer-divider"></div>
+
+  <div class="footer-social">
+    <a href="mailto:kevinwu@gtrainerdemo.jdn2023.com">
+      <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+      kevinwu@gtrainerdemo.jdn2023.com
+    </a>
+    <a href="https://www.facebook.com/Journal.of.Digital.Narrative" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      Facebook
+    </a>
+    <a href="https://www.youtube.com/@Journal_of_Digital_Narrative" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white"/></svg>
+      YouTube
+    </a>
+    <a href="https://www.instagram.com/journal_of_digital_narrative/" target="_blank" rel="noopener">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Instagram
+    </a>
+  </div>
+
+  <div class="footer-divider"></div>
+
+  <div class="visitor-badge">
+    <span>瀏覽人次統計：</span>
+    <a href="https://hits.seeyoufarm.com" target="_blank" rel="noopener">
+      <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgems-portal.vercel.app&count_bg=%232563EB&title_bg=%2364748B&icon=&icon_color=%23FFFFFF&title=瀏覽次數&edge_flat=true" alt="visitor count">
+    </a>
+  </div>
 </footer>
 
 <script>
