@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的 Gemini Gems 入口</title>
+  <style>
+    :root {
+      --bg: #0f0f13;
+      --surface: #1a1a24;
+      --surface2: #22222f;
+      --border: #2e2e3e;
+      --accent: #7c6af7;
+      --accent2: #5bbfff;
+      --text: #e8e8f0;
+      --muted: #8888aa;
+      --tag-bg: #2a2a3a;
+      --tag-active: #7c6af7;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, #1a1030 0%, #0d1a2e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 32px 24px 24px;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    header p { color: var(--muted); font-size: 0.95rem; }
+
+    /* Controls */
+    .controls {
+      max-width: 1100px;
+      margin: 24px auto 0;
+      padding: 0 20px;
+    }
+    .search-wrap {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .search-wrap svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+    #searchInput {
+      width: 100%;
+      padding: 12px 16px 12px 44px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    #searchInput:focus { border-color: var(--accent); }
+    #searchInput::placeholder { color: var(--muted); }
+
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .filter-label { color: var(--muted); font-size: 0.82rem; margin-right: 4px; }
+    .tag-btn {
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--tag-bg);
+      color: var(--muted);
+      font-size: 0.82rem;
+      cursor: pointer;
+      transition: all 0.18s;
+      user-select: none;
+    }
+    .tag-btn:hover { border-color: var(--accent); color: var(--text); }
+    .tag-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .tag-btn.all.active { background: var(--accent2); border-color: var(--accent2); }
+
+    /* Stats */
+    .stats {
+      max-width: 1100px;
+      margin: 12px auto 0;
+      padding: 0 20px;
+      color: var(--muted);
+      font-size: 0.83rem;
+    }
+
+    /* Grid */
+    .grid {
+      max-width: 1100px;
+      margin: 16px auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* Card */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      transition: border-color 0.2s, transform 0.15s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(124,106,247,0.15);
+    }
+    .card.hidden { display: none; }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .card-icon {
+      font-size: 1.8rem;
+      line-height: 1;
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface2);
+      border-radius: 10px;
+    }
+    .card-info { flex: 1; min-width: 0; }
+    .card-name {
+      font-weight: 600;
+      font-size: 0.97rem;
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .card-category {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+    .card-tag {
+      font-size: 0.72rem;
+      padding: 3px 9px;
+      border-radius: 12px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: linear-gradient(135deg, var(--accent), #9c8aff);
+      border-radius: 8px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: opacity 0.18s, transform 0.12s;
+      align-self: flex-start;
+      margin-top: auto;
+    }
+    .card-link:hover { opacity: 0.88; transform: scale(1.02); }
+
+    /* Empty state */
+    .empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 0;
+      color: var(--muted);
+    }
+    .empty svg { margin-bottom: 12px; opacity: 0.4; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>✨ 我的 Gemini Gems 入口</h1>
+  <p>收錄 22 個 Gems，依標籤分類快速找到你需要的工具</p>
+</header>
+
+<div class="controls">
+  <div class="search-wrap">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+    </svg>
+    <input id="searchInput" type="text" placeholder="搜尋 Gem 名稱或標籤…">
+  </div>
+  <div class="filter-bar">
+    <span class="filter-label">分類：</span>
+    <button class="tag-btn all active" data-tag="all">全部</button>
+    <!-- dynamically populated -->
+  </div>
+</div>
+
+<div class="stats" id="stats"></div>
+
+<div class="grid" id="grid"></div>
+
+<footer>共 22 個 Gemini Gems &nbsp;·&nbsp; 點擊卡片按鈕直接開啟</footer>
+
+<script>
+const gems = [
+  {
+    name: "手語教學圖卡",
+    icon: "🤟",
+    category: "教育",
+    tags: ["教育", "圖卡", "手語", "特殊教育"],
+    url: "https://gemini.google.com/gem/1tPlNSSgJ23OahVo_0aOVO7vMsDlqJWVj?usp=sharing"
+  },
+  {
+    name: "學術論文筆記幫手",
+    icon: "📚",
+    category: "學術",
+    tags: ["學術", "筆記", "論文", "研究"],
+    url: "https://gemini.google.com/gem/1HGAsmR5gyxKI5b86R9DUClbpW5-1KfRl?usp=sharing"
+  },
+  {
+    name: "3D程式模型圖製作",
+    icon: "🧊",
+    category: "設計",
+    tags: ["設計", "3D", "模型", "程式"],
+    url: "https://gemini.google.com/gem/10AVIpU7dsMZerAYpegS_w9Jdro9AdR-q?usp=sharing"
+  },
+  {
+    name: "YAML資訊圖表指令大師",
+    icon: "📊",
+    category: "設計",
+    tags: ["設計", "YAML", "圖表", "資訊視覺化"],
+    url: "https://gemini.google.com/gem/1912ddlcEf9q-wtCJ4G8QLjaVC2Hfxtl_?usp=sharing"
+  },
+  {
+    name: "YAML 簡報指令大師",
+    icon: "🎞️",
+    category: "簡報",
+    tags: ["簡報", "YAML", "投影片"],
+    url: "https://gemini.google.com/gem/1Ezp6J75u0IrNQgxmzLZsRaOiNHdcsskx?usp=sharing"
+  },
+  {
+    name: "狂想音樂創作家",
+    icon: "🎵",
+    category: "創意",
+    tags: ["創意", "音樂", "創作"],
+    url: "https://gemini.google.com/gem/1UMJ5WiUzjSIlBm80ADnyC7gK3PFxTlrj?usp=sharing"
+  },
+  {
+    name: "Opal Gems建置提示詞架構師",
+    icon: "💎",
+    category: "提示詞",
+    tags: ["提示詞", "架構", "Gems", "AI工具"],
+    url: "https://gemini.google.com/gem/1Ia7UDXHaS7SbkjNuU02u-a1LqF8JFnQH?usp=sharing"
+  },
+  {
+    name: "情人節圖卡繪師",
+    icon: "💝",
+    category: "設計",
+    tags: ["設計", "圖卡", "繪圖", "節日"],
+    url: "https://gemini.google.com/gem/1S7FM5LjXm4e69S2wYx65CVE5ahBrd40S?usp=sharing"
+  },
+  {
+    name: "素養試題配圖繪師",
+    icon: "🖼️",
+    category: "教育",
+    tags: ["教育", "圖卡", "繪圖", "素養", "試題"],
+    url: "https://gemini.google.com/gem/1S7FM5LjXm4e69S2wYx65CVE5ahBrd40S?usp=sharing"
+  },
+  {
+    name: "素養試題設計專家團隊",
+    icon: "📝",
+    category: "教育",
+    tags: ["教育", "試題", "素養", "命題"],
+    url: "https://gemini.google.com/gem/1Dw0XVHLVkDPVs7-tUicmBzU-5tP-rEUP?usp=sharing"
+  },
+  {
+    name: "學術用圖快樂繪師",
+    icon: "🎨",
+    category: "學術",
+    tags: ["學術", "設計", "繪圖", "插圖"],
+    url: "https://gemini.google.com/gem/1VsWUL5qIdszLEWxGfTELDBxHEoSD2Bcj?usp=sharing"
+  },
+  {
+    name: "DOK學習單設計專家",
+    icon: "📋",
+    category: "教育",
+    tags: ["教育", "學習單", "DOK", "設計"],
+    url: "https://gemini.google.com/gem/1XyrMeJeMy7MSWP_NMx0bgJyO3on9yWGO?usp=sharing"
+  },
+  {
+    name: "海報/資訊圖卡設計師",
+    icon: "🗂️",
+    category: "設計",
+    tags: ["設計", "海報", "圖卡", "資訊視覺化"],
+    url: "https://gemini.google.com/gem/15yRFwHA0vLzrsiu57USdmcz4HQfdctJZ?usp=sharing"
+  },
+  {
+    name: "數位精進採購小顧問",
+    icon: "🛒",
+    category: "行政",
+    tags: ["行政", "採購", "顧問", "數位"],
+    url: "https://gemini.google.com/gem/1qKIiprEPQmln6WkFfLmhaurRfaiVJhdY?usp=sharing"
+  },
+  {
+    name: "教學用漫畫專家",
+    icon: "💬",
+    category: "教育",
+    tags: ["教育", "漫畫", "繪圖", "教學"],
+    url: "https://gemini.google.com/gem/1jf5AoQg2hSmevQqLurP-9rPqWyBoXCjg?usp=sharing"
+  },
+  {
+    name: "Google Slides 教育簡報專家",
+    icon: "📑",
+    category: "簡報",
+    tags: ["簡報", "教育", "Google Slides", "投影片"],
+    url: "https://gemini.google.com/gem/15jKCA1snnh2dAljoP7D0FkULXU73kfjZ?usp=sharing"
+  },
+  {
+    name: "Gemini Gems 系統提示詞設計師",
+    icon: "⚙️",
+    category: "提示詞",
+    tags: ["提示詞", "Gems", "設計", "AI工具"],
+    url: "https://gemini.google.com/gem/1jZyJUz8pihNMxNpzdylYt5NSQN4o7yed?usp=sharing"
+  },
+  {
+    name: "圖解力筆記設計師",
+    icon: "🗒️",
+    category: "設計",
+    tags: ["設計", "筆記", "圖解", "視覺化"],
+    url: "https://gemini.google.com/gem/1l77qEKaFbAFbvBwgbB04LyVlvpNHsctO?usp=sharing"
+  },
+  {
+    name: "黑白學習單大師",
+    icon: "📄",
+    category: "教育",
+    tags: ["教育", "學習單", "印刷", "設計"],
+    url: "https://gemini.google.com/gem/1F-ekj1bpo2tHWJkxCmiBBRTcSvZelQ7c?usp=sharing"
+  },
+  {
+    name: "公文草擬大師",
+    icon: "📜",
+    category: "行政",
+    tags: ["行政", "公文", "寫作", "正式文書"],
+    url: "https://gemini.google.com/gem/1KETnUC9TAjQ4Edu2cB3DG22N0PoxguHL?usp=sharing"
+  },
+  {
+    name: "素養導向教案設計師",
+    icon: "🏫",
+    category: "教育",
+    tags: ["教育", "教案", "素養", "108課綱"],
+    url: "https://gemini.google.com/gem/1VydJloOuzZc29o1IdVlWHe_U_KaNsSwu?usp=sharing"
+  },
+  {
+    name: "提示詞優化專家",
+    icon: "🔧",
+    category: "提示詞",
+    tags: ["提示詞", "優化", "AI工具"],
+    url: "https://gemini.google.com/gem/1n2ffavcC-qe4THgonxV4nNAdH8i5Ova4?usp=sharing"
+  }
+];
+
+// Collect all unique tags
+const allTags = [...new Set(gems.flatMap(g => g.tags))].sort();
+
+// Build filter buttons
+const filterBar = document.querySelector('.filter-bar');
+allTags.forEach(tag => {
+  const btn = document.createElement('button');
+  btn.className = 'tag-btn';
+  btn.dataset.tag = tag;
+  btn.textContent = tag;
+  filterBar.appendChild(btn);
+});
+
+// Render cards
+const grid = document.getElementById('grid');
+gems.forEach((gem, i) => {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.dataset.tags = gem.tags.join(' ').toLowerCase();
+  card.dataset.name = gem.name.toLowerCase();
+  card.innerHTML = `
+    <div class="card-top">
+      <div class="card-icon">${gem.icon}</div>
+      <div class="card-info">
+        <div class="card-name">${gem.name}</div>
+        <div class="card-category">${gem.category}</div>
+      </div>
+    </div>
+    <div class="card-tags">
+      ${gem.tags.map(t => `<span class="card-tag">${t}</span>`).join('')}
+    </div>
+    <a class="card-link" href="${gem.url}" target="_blank" rel="noopener">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15 3 21 3 21 9"/>
+        <line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+      開啟 Gem
+    </a>
+  `;
+  grid.appendChild(card);
+});
+
+// Filter logic
+let activeTag = 'all';
+let searchQuery = '';
+
+function updateCards() {
+  const cards = grid.querySelectorAll('.card');
+  let visible = 0;
+  cards.forEach(card => {
+    const matchTag = activeTag === 'all' || card.dataset.tags.split(' ').includes(activeTag.toLowerCase());
+    const matchSearch = !searchQuery ||
+      card.dataset.name.includes(searchQuery) ||
+      card.dataset.tags.includes(searchQuery);
+    if (matchTag && matchSearch) {
+      card.classList.remove('hidden');
+      visible++;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+
+  // Empty state
+  let empty = grid.querySelector('.empty');
+  if (visible === 0) {
+    if (!empty) {
+      empty = document.createElement('div');
+      empty.className = 'empty';
+      empty.innerHTML = `<svg width="40" height="40" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><br>找不到符合的 Gem`;
+      grid.appendChild(empty);
+    }
+  } else {
+    if (empty) empty.remove();
+  }
+
+  document.getElementById('stats').textContent = `顯示 ${visible} / ${gems.length} 個 Gems`;
+}
+
+// Tag button clicks
+filterBar.addEventListener('click', e => {
+  const btn = e.target.closest('.tag-btn');
+  if (!btn) return;
+  filterBar.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeTag = btn.dataset.tag;
+  updateCards();
+});
+
+// Search
+document.getElementById('searchInput').addEventListener('input', e => {
+  searchQuery = e.target.value.trim().toLowerCase();
+  updateCards();
+});
+
+updateCards();
+</script>
+</body>
+</html>

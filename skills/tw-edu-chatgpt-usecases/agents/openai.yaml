@@ -1,0 +1,7 @@
+interface:
+  display_name: "Taiwan Edu AI Usecases"
+  short_description: "20 zh-TW school ChatGPT scenarios"
+  default_prompt: "Use $tw-edu-chatgpt-usecases to draft a localized Taiwan school workflow and prompt template."
+
+policy:
+  allow_implicit_invocation: true

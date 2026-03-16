@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pomodoro Timer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header>
+        <h1>Pomodoro</h1>
+        <p>Focus in short bursts. Rest with intention.</p>
+      </header>
+
+      <section class="timer-shell" aria-live="polite">
+        <svg class="progress-ring" viewBox="0 0 220 220" role="img" aria-label="Timer progress">
+          <circle class="progress-ring__track" cx="110" cy="110" r="96"></circle>
+          <circle class="progress-ring__indicator" cx="110" cy="110" r="96"></circle>
+        </svg>
+
+        <div class="timer-text">
+          <div id="modeLabel" class="mode-label">Focus</div>
+          <div id="timeDisplay" class="time-display">25:00</div>
+        </div>
+      </section>
+
+      <section class="mode-switch" aria-label="Select timer mode">
+        <button class="mode-btn active" data-mode="focus">Focus</button>
+        <button class="mode-btn" data-mode="shortBreak">Short Break</button>
+        <button class="mode-btn" data-mode="longBreak">Long Break</button>
+      </section>
+
+      <section class="controls">
+        <button id="startPauseBtn" class="primary">Start</button>
+        <button id="resetBtn" class="ghost">Reset</button>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

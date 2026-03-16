@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "pomodoro-app",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3000", "--directory", "pomodoro-app"],
+      "port": 3000
+    },
+    {
+      "name": "gems-portal",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3001", "--directory", "gems-portal"],
+      "port": 3001
+    }
+  ]
+}

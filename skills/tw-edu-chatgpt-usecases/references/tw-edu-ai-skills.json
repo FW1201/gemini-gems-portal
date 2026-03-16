@@ -1,0 +1,275 @@
+{
+  "skill_id": "tw-edu-chatgpt-usecases",
+  "version": "1.0.0",
+  "locale": "zh-TW",
+  "updated_at": "2026-02-12",
+  "description": "20 practical Taiwan school scenarios for ChatGPT in lesson design, competency-based assessment, and school administration drafting.",
+  "global_guardrails": [
+    "不得輸入可識別學生個資（姓名、身分證字號、電話、住址、醫療與輔導敏感資訊）。",
+    "涉及成績、輔導、個案資料時，先完成匿名化與去識別化。",
+    "AI 產出一律視為草稿，需由教師或行政人員人工審核後才能發布。",
+    "題目、答案、解析需做人審：正確性、難度、文化情境在地性與歧視風險。",
+    "正式公文與對外公告需符合校內流程及主管機關最新規範。"
+  ],
+  "output_contract": {
+    "required_sections": [
+      "任務目標",
+      "輸入假設",
+      "草稿內容",
+      "人工審核重點"
+    ],
+    "default_language": "zh-TW"
+  },
+  "sources": [
+    {
+      "title": "教育部中小學數位學習精進方案下載頁",
+      "url": "https://pads.moe.edu.tw/download.php"
+    },
+    {
+      "title": "中小學使用生成式人工智慧注意事項2.1",
+      "url": "https://pads.moe.edu.tw/download_file.php?file=_upload_04cfe89bbfb74958c6f0a8d21c2882be.pdf&old=upload"
+    },
+    {
+      "title": "中小學使用生成式人工智慧注意事項2.1（學生版）",
+      "url": "https://pads.moe.edu.tw/download_file.php?file=_upload_7ee5f88fc2f0f50a72e9cddae30d2f7a.pdf&old=upload"
+    },
+    {
+      "title": "教育部中小學數位教學指引3.0",
+      "url": "https://pads.moe.edu.tw/download_file.php?file=%E6%95%99%E8%82%B2%E9%83%A8%E4%B8%AD%E5%B0%8F%E5%AD%B8%E6%95%B8%E4%BD%8D%E6%95%99%E5%AD%B8%E6%8C%87%E5%BC%953.0%E7%89%881140113.pdf&old=upload"
+    },
+    {
+      "title": "素養導向課室評量計畫",
+      "url": "https://dpcca.rcpet.edu.tw/"
+    },
+    {
+      "title": "大考中心素養導向命題方向與試題示例",
+      "url": "https://www.ceec.edu.tw/xmdoc/cont?sid=0K119541480839328516&xsmsid=0J177009711460336585"
+    },
+    {
+      "title": "行政院文書處理手冊",
+      "url": "https://www.ey.gov.tw/Page/F0CD366C64B5A15C/c689d069-9a0d-47b3-b9cd-fac6da2d9234"
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "tw-lesson-weekly-plan",
+      "name": "國小導師每週教案快編",
+      "category": "teaching",
+      "target_users": ["國小教師", "導師"],
+      "trigger": "下週授課前需要快速完成可上課的教案草稿。",
+      "required_inputs": ["grade", "subject", "unit", "periods"],
+      "prompt_template": "你是台灣{{grade}}{{subject}}教師助理。請根據單元{{unit}}，設計{{periods}}節課的每週教案。輸出：學習目標（含素養向度）、教學流程（每節時間分配）、提問設計、分層任務、形成性評量與回家作業。",
+      "human_checklist": ["符合課本進度", "節奏可在真實課堂完成", "學習目標可觀察可評量"],
+      "compliance_notes": ["避免使用學生真實個資作範例。"]
+    },
+    {
+      "id": "tw-junior-review-to-competency",
+      "name": "國中複習題改素養題",
+      "category": "assessment",
+      "target_users": ["國中教師"],
+      "trigger": "原本題目偏記憶，想改成會考導向的情境題。",
+      "required_inputs": ["subject", "chapter", "difficulty", "legacy_items"],
+      "prompt_template": "請把以下{{subject}}章節{{chapter}}的傳統題目改寫為素養導向題組，難度{{difficulty}}。保留核心概念但加入生活情境、資料判讀與推理。原題如下：{{legacy_items}}。請輸出新題、答案、解析、常見迷思與補救建議。",
+      "human_checklist": ["題意清楚無歧義", "答案唯一或評分規準明確", "難度對齊年級"],
+      "compliance_notes": ["不可直接重製受版權保護之完整試題文本。"]
+    },
+    {
+      "id": "tw-senior-inquiry-project",
+      "name": "高中探究與實作課題生成",
+      "category": "teaching",
+      "target_users": ["高中教師"],
+      "trigger": "需要可執行的探究題目與評量架構。",
+      "required_inputs": ["subject", "available_tools", "school_theme", "duration_weeks"],
+      "prompt_template": "以{{subject}}探究與實作課為背景，依據可用資源{{available_tools}}與校本議題{{school_theme}}，規劃{{duration_weeks}}週探究課。請輸出研究問題、假設、變因、資料蒐集方式、里程碑與評分規準草案。",
+      "human_checklist": ["實驗或調查安全可行", "資料蒐集符合倫理", "評分規準可操作"],
+      "compliance_notes": ["若涉及人體研究，需遵守校內與法規程序。"]
+    },
+    {
+      "id": "tw-cross-discipline-co-teach",
+      "name": "跨領域共備設計",
+      "category": "teaching",
+      "target_users": ["課發會", "跨科教師"],
+      "trigger": "需要兩科以上共同授課方案。",
+      "required_inputs": ["subjects", "theme", "weeks"],
+      "prompt_template": "請設計{{subjects}}跨領域主題課，主題為{{theme}}，共{{weeks}}週。輸出共備分工、每週重點、跨科任務、學習單要點與成果評量方式。",
+      "human_checklist": ["兩科能力指標都有落點", "教師分工清楚", "學生產出可展示"],
+      "compliance_notes": ["校本課程名稱與時數以校內核定版本為準。"]
+    },
+    {
+      "id": "tw-clil-bilingual-convert",
+      "name": "雙語課堂語句轉換",
+      "category": "teaching",
+      "target_users": ["雙語教師", "CLIL教師"],
+      "trigger": "要把既有教案轉為雙語可用。",
+      "required_inputs": ["subject", "grade", "lesson_text", "english_level"],
+      "prompt_template": "把以下{{grade}}{{subject}}教學內容轉成雙語教學版，學生英語程度{{english_level}}。原內容：{{lesson_text}}。請輸出關鍵詞雙語表、教師課堂指令、提問句型、低中高三層任務。",
+      "human_checklist": ["專有名詞翻譯正確", "語句符合學生程度", "不犧牲學科理解"],
+      "compliance_notes": ["避免僅做直譯，需保留學科脈絡。"]
+    },
+    {
+      "id": "tw-differentiated-3tier",
+      "name": "差異化三層任務",
+      "category": "teaching",
+      "target_users": ["中小學教師"],
+      "trigger": "同班程度差距大，需要分層作業。",
+      "required_inputs": ["subject", "unit", "diagnosis_summary"],
+      "prompt_template": "根據{{subject}}單元{{unit}}與班級診斷{{diagnosis_summary}}，設計A/B/C三層任務。每層請給目標、活動、完成標準、教師回饋語句與加強建議。",
+      "human_checklist": ["三層任務難度遞進", "每層都可成功完成", "回饋語具體"],
+      "compliance_notes": ["避免使用標籤化語言描述學生。"]
+    },
+    {
+      "id": "tw-remedial-15min",
+      "name": "補救教學15分鐘微課",
+      "category": "teaching",
+      "target_users": ["中小學教師"],
+      "trigger": "午休或第8節僅有短時間補救。",
+      "required_inputs": ["subject", "learning_gap", "minutes"],
+      "prompt_template": "請設計{{minutes}}分鐘的{{subject}}補救微課，針對學習缺口{{learning_gap}}。輸出：引導活動、核心教學、快速檢核題、回家練習與下一步追蹤。",
+      "human_checklist": ["時間可執行", "檢核題可測到目標", "補救步驟連續"],
+      "compliance_notes": ["補救名單與成績資訊需匿名化。"]
+    },
+    {
+      "id": "tw-class-meeting-issue",
+      "name": "班會議題討論教案",
+      "category": "student-affairs",
+      "target_users": ["導師", "學務人員"],
+      "trigger": "班會要討論網路素養、AI倫理或班級衝突。",
+      "required_inputs": ["grade", "topic", "session_minutes"],
+      "prompt_template": "為{{grade}}設計{{session_minutes}}分鐘班會教案，主題{{topic}}。包含情境案例、分組討論題、教師引導語、班級共識條款與後續追蹤。",
+      "human_checklist": ["討論題不引導霸凌", "規範具可執行性", "語氣中立"],
+      "compliance_notes": ["個案討論不得揭露可辨識身份。"]
+    },
+    {
+      "id": "tw-competency-stem-rewrite",
+      "name": "素養題幹生活化改寫",
+      "category": "assessment",
+      "target_users": ["命題教師"],
+      "trigger": "需要將單題升級成情境題組。",
+      "required_inputs": ["original_item", "competency_focus", "grade"],
+      "prompt_template": "把以下題目改為{{grade}}素養導向題：{{original_item}}。核心能力聚焦{{competency_focus}}。請輸出題幹、資料素材、作答要求、評分重點與錯誤類型。",
+      "human_checklist": ["情境自然非硬套", "能力對應明確", "評分標準可重現"],
+      "compliance_notes": ["避免直接仿作特定大型考試之受保護題目。"]
+    },
+    {
+      "id": "tw-exam-mistake-analysis",
+      "name": "段考錯因分析與講評",
+      "category": "assessment",
+      "target_users": ["中小學教師"],
+      "trigger": "段考後需要高效率講評與補救。",
+      "required_inputs": ["subject", "item_set", "error_patterns"],
+      "prompt_template": "請針對{{subject}}題組{{item_set}}與常見錯誤{{error_patterns}}，做錯因分類、講評腳本、補救活動與下次教學調整建議。",
+      "human_checklist": ["錯因分類可落地", "補救活動對準錯因", "講評語句具鼓勵性"],
+      "compliance_notes": ["勿輸入完整班級成績名單。"]
+    },
+    {
+      "id": "tw-rubric-drafter",
+      "name": "非選題Rubric草擬",
+      "category": "assessment",
+      "target_users": ["中學教師"],
+      "trigger": "作文、申論、報告需要一致評分。",
+      "required_inputs": ["task_type", "performance_levels", "criteria"],
+      "prompt_template": "請為{{task_type}}設計{{performance_levels}}級評分規準，評分向度：{{criteria}}。輸出各級描述、給分要點、常見問題與示例評語。",
+      "human_checklist": ["級距描述可區辨", "評語可直接貼用", "向度數量合理"],
+      "compliance_notes": ["評分規準需經教學團隊共識確認。"]
+    },
+    {
+      "id": "tw-ai-disclosure-policy",
+      "name": "作業AI揭露規範草案",
+      "category": "governance",
+      "target_users": ["任課教師", "教務處"],
+      "trigger": "學生可用AI但需訂揭露與引用規則。",
+      "required_inputs": ["subject", "assignment_type", "allowed_scope"],
+      "prompt_template": "為{{subject}}的{{assignment_type}}設計AI使用揭露規範。允許範圍：{{allowed_scope}}。請輸出可用/不可用行為、揭露格式、引用示例、違規處理流程與教師溝通語句。",
+      "human_checklist": ["規範可執行", "揭露格式簡單", "處理流程符合校規"],
+      "compliance_notes": ["須與校內既有學術倫理與獎懲規定一致。"]
+    },
+    {
+      "id": "tw-learning-portfolio-reflection",
+      "name": "學習歷程反思教練",
+      "category": "student-support",
+      "target_users": ["高中師生"],
+      "trigger": "學生不會寫具體反思與成長證據。",
+      "required_inputs": ["activity_summary", "student_role", "evidence"],
+      "prompt_template": "請協助將活動經驗轉成學習歷程反思。活動摘要：{{activity_summary}}；角色：{{student_role}}；證據：{{evidence}}。輸出第一人稱反思草稿、可量化成長點、後續行動。",
+      "human_checklist": ["內容真實可舉證", "避免空泛形容詞", "可連結申請目標"],
+      "compliance_notes": ["不得代寫虛構經歷。"]
+    },
+    {
+      "id": "tw-parent-notice-dual-tone",
+      "name": "家長通知雙版本",
+      "category": "administration",
+      "target_users": ["導師", "行政人員"],
+      "trigger": "同一通知需正式版與白話版。",
+      "required_inputs": ["event_name", "date_time", "key_notes"],
+      "prompt_template": "請為{{event_name}}產生兩種通知文：1) 校務正式公告版；2) 家長易懂白話版。活動時間{{date_time}}，重點{{key_notes}}。各版均附Q&A三題。",
+      "human_checklist": ["關鍵資訊一致", "口吻分眾清楚", "行動指示明確"],
+      "compliance_notes": ["對外資訊需以校方核定內容為準。"]
+    },
+    {
+      "id": "tw-homeroom-comments-bank",
+      "name": "導師評語語句庫",
+      "category": "student-support",
+      "target_users": ["導師"],
+      "trigger": "期末大量評語需要快速且個別化。",
+      "required_inputs": ["student_profile_keywords", "term_focus"],
+      "prompt_template": "依據學生表現關鍵字{{student_profile_keywords}}與本學期重點{{term_focus}}，產出正向且具體的導師評語句庫，分為學習、態度、合作、改進建議四類。",
+      "human_checklist": ["評語避免貼標", "建議具體可做", "語氣尊重"],
+      "compliance_notes": ["禁止輸入學生真名與完整成績。"]
+    },
+    {
+      "id": "tw-official-memo-draft",
+      "name": "校內公文函稿草擬",
+      "category": "administration",
+      "target_users": ["行政人員", "組長"],
+      "trigger": "需快速起草函、簽、公告等行政文件。",
+      "required_inputs": ["doc_type", "recipient", "subject_line", "facts", "actions"],
+      "prompt_template": "請依台灣公文語體草擬{{doc_type}}。受文者{{recipient}}，主旨{{subject_line}}，說明{{facts}}，擬辦{{actions}}。請輸出可送審版本與常見修正提醒。",
+      "human_checklist": ["格式符合校內公文系統", "主旨精簡", "法規與日期正確"],
+      "compliance_notes": ["正式發文前須經主管簽核。"]
+    },
+    {
+      "id": "tw-meeting-minutes-action-items",
+      "name": "會議紀錄與待辦萃取",
+      "category": "administration",
+      "target_users": ["行政會議紀錄者", "承辦人"],
+      "trigger": "會議後需快速整理結論與分工。",
+      "required_inputs": ["meeting_type", "notes_text"],
+      "prompt_template": "請把以下{{meeting_type}}紀錄整理為正式會議紀錄：{{notes_text}}。輸出議題摘要、決議事項、責任人、完成期限、追蹤欄位。",
+      "human_checklist": ["決議與原紀錄一致", "責任人與期限完整", "條列清楚"],
+      "compliance_notes": ["涉及人事敏感議題時請先去識別化。"]
+    },
+    {
+      "id": "tw-project-proposal-kpi",
+      "name": "計畫申請摘要與KPI",
+      "category": "administration",
+      "target_users": ["行政主管", "計畫承辦"],
+      "trigger": "申請補助計畫時需要摘要與可量化指標。",
+      "required_inputs": ["project_name", "goals", "resources", "timeline"],
+      "prompt_template": "為{{project_name}}撰寫計畫摘要。目標{{goals}}，資源{{resources}}，時程{{timeline}}。請輸出問題分析、執行策略、KPI、風險控管與成果呈現方式。",
+      "human_checklist": ["KPI可衡量", "時程合理", "預算與人力對得上"],
+      "compliance_notes": ["仍需依主辦單位格式調整欄位。"]
+    },
+    {
+      "id": "tw-activity-risk-consent",
+      "name": "活動風險盤點與同意書草稿",
+      "category": "student-affairs",
+      "target_users": ["學務處", "活動承辦"],
+      "trigger": "校外教學或競賽活動前需完整告知。",
+      "required_inputs": ["activity_plan", "participants", "risk_factors"],
+      "prompt_template": "依活動計畫{{activity_plan}}、參與對象{{participants}}與風險{{risk_factors}}，產出風險盤點表、應變流程、家長告知重點與同意書草稿。",
+      "human_checklist": ["風險分類完整", "緊急聯絡流程清楚", "保險與醫療資訊齊全"],
+      "compliance_notes": ["最終版本需符合法規與校安規範。"]
+    },
+    {
+      "id": "tw-website-social-rewrite",
+      "name": "校網公告與社群貼文同步改寫",
+      "category": "communications",
+      "target_users": ["校務宣導", "行政人員"],
+      "trigger": "同一活動需要官網與社群雙版本。",
+      "required_inputs": ["event_info", "cta", "platforms"],
+      "prompt_template": "請將活動資訊{{event_info}}改寫成多平台內容，平台{{platforms}}。輸出：校網正式公告、社群短文、家長群組提醒訊息，各版本加入行動呼籲{{cta}}與FAQ。",
+      "human_checklist": ["三版本資訊一致", "字數適合平台", "語氣符合校務形象"],
+      "compliance_notes": ["不可發布未核定資訊或未授權影像。"]
+    }
+  ]
+}
